@@ -6,7 +6,7 @@ import MainLayout from "./layout/MainLayout";
 import ErrorBage from "./pages/error/ErrorBage";
 import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
-import Register from "./pages/register/register";
+import Register from "./pages/register/Register";
 import Shop from "./pages/shop/Shop";
 import Cart from "./pages/cart/Cart";
 import ResetPass from "./pages/resetpass/ResetPass";
