@@ -1,5 +1,5 @@
 import React from 'react'
-import routes from './routes'
+import routes from './Routes'
 import { RouterProvider } from 'react-router'
 
 export default function App() {

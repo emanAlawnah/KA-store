@@ -13,7 +13,7 @@ import ResetPass from "./pages/resetpass/ResetPass";
 import RegisterLayout from "./layout/RegisterLayout";
 import ResetPassCode from "./pages/resetpasscode/ResetPassCode";
 import Newpassword from "./pages/newpassword/Newpassword";
-const routes = createBrowserRouter([
+const Routes = createBrowserRouter([
     {
       path:'/',
       element:<MainLayout/>,
@@ -53,7 +53,7 @@ const routes = createBrowserRouter([
   },
 ]);
 
-export default routes;
+export default Routes;
 
 
 
