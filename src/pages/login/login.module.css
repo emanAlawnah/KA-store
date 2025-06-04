@@ -1,0 +1,104 @@
+.leftcont{
+background-color:#48436a;
+width: 50%;
+background-image: url("/./public/regphoto.png");
+background-repeat: no-repeat;
+background-position: center center;
+background-size: contain;
+height: 100vh; 
+}
+
+.logoncont{
+    
+  width: 100%;
+  height: 100vh; 
+  display: flex;
+  
+}
+
+.namecont{
+    width: 100%;
+    display: flex;
+}
+
+.regcont{
+    
+  width: 100%;
+  height: 100vh; 
+  display: flex;
+  
+}
+
+.rgbtns{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.reg{
+    display: flex;
+    flex-direction: column;
+}
+.leftcont{
+background-color:#48436a;
+width: 40%;
+background-image: url("/./public/regphoto.webp");
+background-repeat: no-repeat;
+background-position: center center;
+background-size: cover;
+height: 100vh; 
+
+}
+.haveanacount{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.emacont{
+   display: flex;
+   flex-direction: column;
+   width: 100%;
+}
+.rightcont{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 40px;
+    margin-left: 30px;
+}
+.dash{
+    margin-top: 20px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+.textfild{
+    border: #48436a;
+    border-radius: 30px;
+}
+.regbtn{
+    background: radial-gradient( #6862a0,  #48436a);
+    color: black;
+
+
+}
+.btnbox{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+.forgotpass{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+@media screen and (max-width :760px) {
+    .leftcont{
+        display: none;
+
+    }
+   
+}
