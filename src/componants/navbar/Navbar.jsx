@@ -12,15 +12,30 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-import { Link } from 'react-router';
+import { Link, Navigate, useNavigate } from 'react-router';
+import Register from '../../pages/register/Register';
+import Login from '../../pages/login/Login';
+import Cart from '../../pages/cart/Cart';
 
-const pages = ['register', 'login'];
+const path = {
+  register: '/auth/register',
+  login: '/auth/login',
+  cart: '/cart',
+};
+const pagesGest = ['register', 'login'];
+const pageAuth = ['cart'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-
+  const islogedIn=Boolean(localStorage.getItem('token'));
+  const navigate =useNavigate();
+  const Logout =()=>{
+    const token =localStorage.getItem('token')
+    localStorage.removeItem('token');
+    navigate('/auth/login');
+  }
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -88,14 +103,18 @@ function Navbar() {
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: 'block', md: 'none' } }}
             >
-              {pages.map((page) => (
+              {(islogedIn ? pageAuth :pagesGest ).map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Typography sx={{ textAlign: 'center' }}>
                     {page}
                   </Typography>
                 </MenuItem>
               ))}
+
+              
+              
             </Menu>
+            
           </Box>
           <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
@@ -118,17 +137,20 @@ function Navbar() {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
+            {(islogedIn? pageAuth:pagesGest).map((page) => (
               <Button
                 key={page}
                 component={Link}
-                to={`/auth/${page}`}
+                to={path[page]}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 {page}
               </Button>
             ))}
+            {islogedIn ?(
+              <Button sx={{ my: 2, color: 'white', display: 'block' }} onClick={Logout}>logout</Button>
+            ):null}
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">

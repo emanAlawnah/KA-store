@@ -13,6 +13,9 @@ import ResetPass from "./pages/resetpass/ResetPass";
 import RegisterLayout from "./layout/RegisterLayout";
 import ResetPassCode from "./pages/resetpasscode/ResetPassCode";
 import Newpassword from "./pages/newpassword/Newpassword";
+import ProductDetails from "./pages/productDetails/ProductDetails";
+import Checkout from "./pages/checkout/Checkout";
+import ProtectedRouter from "./componants/protectedRouter/ProtectedRouter";
 const Routes = createBrowserRouter([
     {
       path:'/',
@@ -23,16 +26,32 @@ const Routes = createBrowserRouter([
           path:'/',
           element:<Home/>
         },
-
+         
        
         {
             path:'/shop',
             element:<Shop/>
         },
-
+         {
+            path:'/product/:id',
+            element:<ProductDetails/>
+        },
         {
+          
             path:'/cart',
-            element:<Cart/>
+            element:
+            <ProtectedRouter>
+               <Cart/>
+            </ProtectedRouter>
+        },
+        {
+          path:'/checkout',
+          element:
+          <ProtectedRouter>
+             <Checkout/>
+          </ProtectedRouter>
+          
+          
         },
 
          

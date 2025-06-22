@@ -1,16 +1,57 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from './login.module.css'
-import { Apple, EmailOutlined, FacebookOutlined, Google, Height, HttpsOutlined } from '@mui/icons-material'
+import { Apple, EmailOutlined, FacebookOutlined, Google, Height, HttpsOutlined, Mode, Mood } from '@mui/icons-material'
 import { Box, Button, InputAdornment, TextField, Typography } from '@mui/material'
 import { grey } from '@mui/material/colors'
 import axios from 'axios'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router'
+import { Link, Navigate, useNavigate } from 'react-router'
+import { Bounce, toast } from 'react-toastify'
 
 export default function Login() {
-  const {register ,handleSubmit }=useForm();
-  const loginform =async(values)=>{
-  const responce= await axios.post(`http://mytshop.runasp.net/api/Account/Login`,values);
+  const {register ,handleSubmit,formState:{errors} }=useForm({mode:'onBlur'});
+  const[loading,setLoading]=useState(false);
+  const [error,seterror]=useState('');
+  const navigate=useNavigate();
+
+const loginform =async(values)=>{
+    try{
+   setLoading(true);
+  const responce= await axios.post(`https://mytshop.runasp.net/api/Account/Login`,values);
+  console.log(responce);
+ localStorage.setItem("token",responce.data.token);
+if(responce.status == 200){
+toast.success('logged in successfully', {
+position: "top-right",
+autoClose: 3000,
+hideProgressBar: false,
+closeOnClick: false,
+pauseOnHover: true,
+draggable: true,
+progress: undefined,
+theme: "light",
+transition: Bounce,
+});
+ navigate('/');
+}
+
+    } catch(error){
+      seterror("unvalied email or password ");
+      toast.error('invalied data', {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      });
+    } finally{
+      setLoading(false);
+    }
+
   }
   return (
       <>
@@ -74,13 +115,15 @@ export default function Login() {
              }}
         > ـــــــــــــــــــــــــــــــ or ـــــــــــــــــــــــــــــــ</Typography>
       </Box> 
-      <Box component={'form'} className={styles.formcont} onSubmit={handleSubmit (loginform)}>
+      <Box component={'form'} className={styles.formcont} onSubmit={handleSubmit(loginform)}>
     
      
       
       
           <TextField
-          {...register ("email")}
+          {...register ("email",{
+            required:'email is required '
+          })}
           placeholder='user@email.com'
           type='email'
           label="User Email"
@@ -102,10 +145,14 @@ export default function Login() {
               </InputAdornment >,
             },
           }}
+          helperText={errors.email?.message}
+           error={errors.email}
         />
 
              <TextField
-             {...register ("password")}
+             {...register ("password",{
+              required:'password is required'
+             })}
              type='password'
           label="password"
           id="outlined-start-adornment"
@@ -127,7 +174,12 @@ export default function Login() {
               </InputAdornment>,
             },
           }}
+          helperText={errors.password?.message}
+          error={errors.password}
         />
+        <Box component='div' sx={{color:'red ', margin: '10px 0'}}>
+          {error}
+        </Box>
         <Box component={'div'} className={styles.forgotpass}>
            <Link  to={'/auth/resetPassword'}>Forget Password?</Link>
         </Box>
@@ -136,14 +188,16 @@ export default function Login() {
             
              
         <Box component='div' sx={{width :'100%'}} className={styles.btnbox}>
-           <Button variant="contained" type='submit' className={styles.regbtn}
+           <Button variant="contained" type='submit' className={styles.regbtn} disabled={loading}
       sx={{
                  color:'black',
                 borderColor:grey[500],
                 width :'50%',
                 borderRadius:'30px'
              }}
-      >Login</Button>
+      >
+        {loading?'Loading...' : 'login' }
+      </Button>
         </Box>
         
        

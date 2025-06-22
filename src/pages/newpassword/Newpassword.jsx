@@ -35,7 +35,7 @@ export default function Newpassword() {
      console.log("Sending:", JSON.stringify(playlod, null, 2));
 
     try{
-         const response =await axios.patch(`http://mytshop.runasp.net/api/Account/SendCode`, playlod);
+         const response =await axios.patch(`https://mytshop.runasp.net/api/Account/SendCode`, playlod);
         if(response.status==200){
             alert("pasword reset succsessfully");
             navigate('/auth/login');

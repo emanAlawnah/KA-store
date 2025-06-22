@@ -17,7 +17,7 @@ export default function ResetPass() {
     const navigate =useNavigate();
     const ResetPas = async(values)=>{
         try{
-        const response = await axios.post(`http://mytshop.runasp.net/api/Account/ForgotPassword`,values);
+        const response = await axios.post(`https://mytshop.runasp.net/api/Account/ForgotPassword`,values);
         if (response.status === 200) {
             localStorage.setItem("userEmail",values.email)
             navigate('/auth/verifycode');

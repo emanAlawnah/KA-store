@@ -1,18 +1,59 @@
 import { Box, Button, InputAdornment, TextField, Typography } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import styles from './regester.module.css'
 import {  Apple, CalendarMonthOutlined, EmailOutlined, FacebookOutlined, Google, HttpsOutlined, PermIdentityOutlined } from '@mui/icons-material'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
 import { grey } from '@mui/material/colors'
 import { Link } from 'react-router';
+import { Bounce, toast } from 'react-toastify'
 
 export default function Register() {
-
-  const {register ,handleSubmit }=useForm();
+  const [loading,setloading]=useState(false);
+  const [error,setrror]=useState({});
+  const {register ,handleSubmit,formState:{errors} }=useForm({mode:'onBlur'});
 
   const regesterform = async(values)=>{
-     const responce = await axios.post(`http://mytshop.runasp.net/api/Account/register`,values);
+    try{
+      setloading(true);
+     const responce = await axios.post(`https://mytshop.runasp.net/api/Account/register`,values);
+     console.log(responce);
+      toast.success('regesterd successfully', {
+position: "top-right",
+autoClose: 3000,
+hideProgressBar: false,
+closeOnClick: false,
+pauseOnHover: true,
+draggable: true,
+progress: undefined,
+theme: "light",
+transition: Bounce,
+});
+ navigate('/'); 
+    } catch (error) {
+  const errors = error?.response?.data?.errors;
+
+  if (error) {
+    setrror(error); 
+
+    toast.error('Please fix the highlighted errors', {
+      position: "bottom-right",
+      autoClose: 3000,
+      theme: "light",
+      transition: Bounce,
+    });
+  } else {
+    toast.error('Registration failed', {
+      position: "bottom-right",
+      autoClose: 3000,
+      theme: "light",
+      transition: Bounce,
+    });
+  }
+}
+finally{
+      setloading(false);
+    }
   }
   return (
         <Box component={'div'} className={styles.regcont}>
@@ -78,7 +119,9 @@ export default function Register() {
     
       <Box className={styles.namecont}>
           <TextField  className='textfild'
-          {...register ("firstName")}
+          {...register ("firstName",{
+            required:'first name is required '
+          })}
           label="First Name"
           id="outlined-start-adornment"
           
@@ -100,9 +143,13 @@ export default function Register() {
               </InputAdornment>,
             },
           }}
+          helperText={errors.firstName?.message}
+          error={errors.firstName}
         />
            <TextField
-           {...register ("lastName")}
+           {...register ("lastName",{
+            required:'last name is required'
+           })}
           
           label="Last Name"
           id="outlined-start-adornment"
@@ -122,13 +169,17 @@ export default function Register() {
               </InputAdornment>,
             },
           }}
+          helperText={errors.lastName?.message}
+          error={errors.lastName}
         />
 
       </Box>
       
       <Box className={styles.emacont}>
          <TextField
-         {...register ("userName")}
+         {...register ("userName",{
+          required:'username is required',
+         })}
           label="User Name"
           id="outlined-start-adornment"
            sx={{
@@ -148,9 +199,17 @@ export default function Register() {
               </InputAdornment>,
             },
           }}
+           helperText={errors.userName?.message}
+           error={errors.userName}
         />
           <TextField
-          {...register ("email")}
+          {...register ("email",{
+            required:'email is required',
+            minLength:{
+              value:5,
+              message:'email must be at least 5 characters'
+            }
+          })}
           placeholder='user@email.com'
           type='email'
           label="User Email"
@@ -172,10 +231,16 @@ export default function Register() {
               </InputAdornment>,
             },
           }}
-        />
+          helperText={errors.email?.message}
+          error={errors.email}
 
+          
+        />
+            
              <TextField
-             {...register ("password")}
+             {...register ("password",{
+              required:'password is required',
+             })}
              type='password'
           label="password"
           id="outlined-start-adornment"
@@ -197,10 +262,15 @@ export default function Register() {
               </InputAdornment>,
             },
           }}
-        />
+       helperText={errors.password?.message}
+       error={errors.password}
 
+        />
+          
             <TextField
-            {...register ("confirmPassword")}
+            {...register ("confirmPassword",{
+              required:'confirmPassword is requred'
+            })}
              type='Password'
           label="Confirm Password"
           id="outlined-start-adornment"
@@ -221,10 +291,14 @@ export default function Register() {
               </InputAdornment>,
             },
           }}
+          helperText={errors.confirmPassword?.message}
+          error={errors.confirmPassword}
         />
 
               <TextField
-              {...register ("birthOfDate")}
+              {...register ("birthOfDate",{
+                required:'birth Of Date is requirde'
+              })}
               type='date'
 
           label="Birth Of Date"
@@ -246,17 +320,21 @@ export default function Register() {
               </InputAdornment>,
             },
           }}
+           helperText={errors.birthOfDate?.message}
+           error={errors.birthOfDate}
+
         />
         <Box component='div' sx={{width :'100%'}} className={styles.btnbox}>
-           <Button variant="contained" type='submit' className={styles.regbtn}
+           <Button variant="contained" type='submit' className={styles.regbtn} disabled={loading}
       sx={{
-                 color:'black',
+                color:'black',
                 borderColor:grey[500],
                 width :'50%',
                 borderRadius:'30px'
              }}
-      >Regester</Button>
+      > {loading?'Loading...' : 'Regester' }</Button>
         </Box>
+
         
        
     
