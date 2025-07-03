@@ -6,9 +6,44 @@ import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { Link, useNavigate } from 'react-router'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
+import { useMutation } from '@tanstack/react-query'
+import { toast } from 'react-toastify'
 export default function Newpassword() {
-      const [showPassword, setShowPassword] = React.useState(false);
       const navigate=useNavigate();
+      const mutation=useMutation({
+        mutationFn:async(data)=>{
+          const email =localStorage.getItem("userEmail");
+          const code =localStorage.getItem("verifyCode");
+           const payload = {
+              email,
+              code,
+              password: data.password,
+             ConfirmPassword: data.ConfirmPassword,
+            };
+            const response =await axios.patch(`https://mytshop.runasp.net/api/Account/SendCode`, payload);
+            return response.data;
+        },
+        onSuccess:()=>{
+           localStorage.removeItem('userEmail');
+           localStorage.removeItem('verifyCode');
+           navigate("/auth/login");
+           toast.success("Password reset successfully");
+           navigate("/auth/login");
+        },
+        onError:(error)=>{
+           toast.error(
+      error?.response?.data?.message ||
+      error?.response?.data?.Message ||
+      "Something went wrong"
+    );
+        }
+      });
+
+      const ResetPas=(data)=>{
+        mutation.mutate(data);
+      }
+      const [showPassword, setShowPassword] = React.useState(false);
+      
       const handleClickShowPassword = () => setShowPassword((show) => !show);
       const handleMouseDownPassword = (event) => {
         event.preventDefault();
@@ -20,37 +55,11 @@ export default function Newpassword() {
   };
 
 
-   const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, watch, formState: { errors } } = useForm({
+    mode: 'onChange'
+  });
 
-    const ResetPas=async(values)=>{
-    const email=localStorage.getItem("userEmail");
-    const code =localStorage.getItem("verifyCode");
-
-    const playlod ={
-    email:email,
-    code:code,
-    password:values.password,
-    confirmPassword: values.ConfirmPassword,
-    };
-     console.log("Sending:", JSON.stringify(playlod, null, 2));
-
-    try{
-         const response =await axios.patch(`https://mytshop.runasp.net/api/Account/SendCode`, playlod);
-        if(response.status==200){
-            alert("pasword reset succsessfully");
-            navigate('/auth/login');
-        }
-    } catch(error){
-    alert(
-    error.response?.data?.message || 
-    error.response?.data?.Message || 
-    "Something went wrong"
-  );
-
-    }
-    console.log("Sending payload:", playlod);
-
-    }
+   
 
 
   return (
@@ -104,7 +113,7 @@ export default function Newpassword() {
           <InputLabel htmlFor="outlined-adornment-password">conferm Password</InputLabel>
           <OutlinedInput
           {...register("ConfirmPassword")}
-            id="outlined-adornment-password"
+            id="outlined-adornment-passwordd"
             type={showPassword ? 'text' : 'password'}
             endAdornment={
               <InputAdornment position="end">

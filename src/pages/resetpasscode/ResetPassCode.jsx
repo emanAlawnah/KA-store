@@ -11,7 +11,7 @@ export default function ResetPassCode() {
 
          const ResetPas =(data)=>{
           localStorage.setItem("verifyCode", data.code);
-
+              
           navigate('/auth/newpassword');
 
           };

@@ -8,34 +8,50 @@ import { grey } from '@mui/material/colors'
 import axios from 'axios'
 import { Link } from 'react-router'
 import { useNavigate } from 'react-router'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { Bounce, toast } from 'react-toastify'
 
 
 export default function ResetPass() {
-    const {register,handleSubmit}=useForm();
-    const [error,seterror]=useState('');
-    const [isloading,setisloading]=useState(false);
-    const navigate =useNavigate();
-    const ResetPas = async(values)=>{
-        try{
-        const response = await axios.post(`https://mytshop.runasp.net/api/Account/ForgotPassword`,values);
-        if (response.status === 200) {
-            localStorage.setItem("userEmail",values.email)
-            navigate('/auth/verifycode');
-        }
+  const navigate =useNavigate();
+  
+  const ResetPassMutation = useMutation({
+    mutationFn :async(values)=>{
+      const response = await axios.post(`https://mytshop.runasp.net/api/Account/ForgotPassword`,values);
+       return response.data;
+    },
+    
+   onSuccess: (_, variables) =>{
+toast.success('Please check your email', {
+position: "top-right",
+autoClose: 3000,
+hideProgressBar: false,
+closeOnClick: false,
+pauseOnHover: true,
+draggable: true,
+progress: undefined,
+theme: "light",
+transition: Bounce,
+});
+     localStorage.setItem("userEmail", variables.email);
+     navigate('/auth/verifycode');
+    },
 
-        }catch(err){
-         seterro(err.message || "Something went wrong");
-
-        }finally {
-       setisloading(true); }
-
+    onError:(err)=>{
+      toast.error('Please enter a valied email', {
+      position: "bottom-right",
+      autoClose: 3000,
+      theme: "light",
+      transition: Bounce,
+    });
+    console.error('error: ',err.message);
     }
-    if(isloading){
-        return<><p>pls waite</p></>
-    }
-    if(error){
-        return <div>{error}</div>
-    }
+  })
+  const {register ,handleSubmit,formState:{errors} }=useForm({mode:'onBlur'});
+  
+  const ResetPas =async(values)=>{
+    ResetPassMutation.mutate(values);
+  }
   return (
    <>
     <Box component={'div'} className={styles.forgetpass}>
@@ -56,7 +72,7 @@ export default function ResetPass() {
       
       <Box component={'form'} onSubmit={handleSubmit(ResetPas)}>
           <TextField
-                   {...register ("email")}
+                   {...register ("email",{ required: true })}
                    placeholder='user@email.com'
                    type='email'
                    label="User Email"

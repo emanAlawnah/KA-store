@@ -16,17 +16,40 @@ import { Link, Navigate, useNavigate } from 'react-router';
 import Register from '../../pages/register/Register';
 import Login from '../../pages/login/Login';
 import Cart from '../../pages/cart/Cart';
+import { ThemeContext } from '@emotion/react';
+import { DarkMode, LightMode } from '@mui/icons-material';
+import { Themecontext } from '../../context/Themecontext';
+import { QueryClient, useQuery, useQueryClient } from '@tanstack/react-query';
+import AxiosAuth from '../../api/AxiosAuth';
 
 const path = {
   register: '/auth/register',
   login: '/auth/login',
   cart: '/cart',
 };
+
 const pagesGest = ['register', 'login'];
 const pageAuth = ['cart'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function Navbar() {
+   const queryClient = useQueryClient();
+   const fetchCartItems = async ()=>{
+    const {data}=await AxiosAuth.get(`/Carts`);
+    return data;
+
+   }
+   useQuery({
+    queryKey:['cartItems'],
+    queryFn:fetchCartItems,
+    staleTime:10000,
+   })
+
+   const data = queryClient.getQueryData(['cartItems']);
+   const cartItems = data?.cartResponse?.length || 0;
+
+  const {mode,togle}=React.useContext(Themecontext);
+  
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const islogedIn=Boolean(localStorage.getItem('token'));
@@ -72,6 +95,7 @@ function Navbar() {
               color: 'inherit',
               textDecoration: 'none',
             }}
+            viewTransition
           >
             LOGO
           </Typography>
@@ -106,7 +130,7 @@ function Navbar() {
               {(islogedIn ? pageAuth :pagesGest ).map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Typography sx={{ textAlign: 'center' }}>
-                    {page}
+                    {page == 'cart'?`cart(${cartItems})` :page}
                   </Typography>
                 </MenuItem>
               ))}
@@ -144,8 +168,9 @@ function Navbar() {
                 to={path[page]}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
+                 viewTransition
               >
-                {page}
+                {page=='cart'?`cart (${cartItems})` :page}
               </Button>
             ))}
             {islogedIn ?(
@@ -153,6 +178,9 @@ function Navbar() {
             ):null}
           </Box>
           <Box sx={{ flexGrow: 0 }}>
+            <IconButton onClick={togle}>
+              {mode === 'light'?<DarkMode/> : <LightMode/>}
+            </IconButton>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />

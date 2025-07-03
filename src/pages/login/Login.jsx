@@ -5,38 +5,37 @@ import { Box, Button, InputAdornment, TextField, Typography } from '@mui/materia
 import { grey } from '@mui/material/colors'
 import axios from 'axios'
 import { useForm } from 'react-hook-form'
-import { Link, Navigate, useNavigate } from 'react-router'
+import { Link, Navigate, replace, useNavigate } from 'react-router'
 import { Bounce, toast } from 'react-toastify'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export default function Login() {
-  const {register ,handleSubmit,formState:{errors} }=useForm({mode:'onBlur'});
-  const[loading,setLoading]=useState(false);
-  const [error,seterror]=useState('');
+  const queryClient = useQueryClient();
   const navigate=useNavigate();
 
-const loginform =async(values)=>{
-    try{
-   setLoading(true);
-  const responce= await axios.post(`https://mytshop.runasp.net/api/Account/Login`,values);
-  console.log(responce);
- localStorage.setItem("token",responce.data.token);
-if(responce.status == 200){
-toast.success('logged in successfully', {
-position: "top-right",
-autoClose: 3000,
-hideProgressBar: false,
-closeOnClick: false,
-pauseOnHover: true,
-draggable: true,
-progress: undefined,
-theme: "light",
-transition: Bounce,
-});
- navigate('/');
-}
+  const loginMutation = useMutation ({
+    mutationFn : async(values)=>{
+      const responce =await axios.post(`https://mytshop.runasp.net/api/Account/Login`,values);
+          return responce.data;
 
-    } catch(error){
-      seterror("unvalied email or password ");
+    },
+     onSuccess: (data)=>{
+    toast.success('logged in successfully', {
+    position: "top-right",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: false,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+    transition: Bounce,
+    });
+      localStorage.setItem("token", data.token);
+      navigate('/');
+
+  },
+  onError: (error) => {
       toast.error('invalied data', {
       position: "bottom-right",
       autoClose: 3000,
@@ -48,11 +47,19 @@ transition: Bounce,
       theme: "light",
       transition: Bounce,
       });
-    } finally{
-      setLoading(false);
-    }
+      console.error("Error :", error.message);
+    },
+  });
+ 
+  
+  
 
-  }
+  const {register ,handleSubmit,formState:{errors} }=useForm({mode:'onBlur'});
+ 
+
+const loginform = async (values) => {
+  loginMutation.mutate(values);
+};
   return (
       <>
       <Box component={'div'} className={styles.logoncont} sx={{width:'100%'}} >
@@ -63,7 +70,7 @@ transition: Bounce,
       <Box component={'div'} className={styles.rightcont}>
 
       <Box component={'div'}>
-        <Box component={'h2'} className={styles.reg}>Create New Account</Box>
+        <Box component={'h2'} className={styles.reg}>Login</Box>
         <Box component={'p'}
           sx={{
                 color: 'gray',
@@ -178,7 +185,8 @@ transition: Bounce,
           error={errors.password}
         />
         <Box component='div' sx={{color:'red ', margin: '10px 0'}}>
-          {error}
+        {loginMutation.isError && 'Login failed. Please check your credentials.'}
+
         </Box>
         <Box component={'div'} className={styles.forgotpass}>
            <Link  to={'/auth/resetPassword'}>Forget Password?</Link>
@@ -188,15 +196,16 @@ transition: Bounce,
             
              
         <Box component='div' sx={{width :'100%'}} className={styles.btnbox}>
-           <Button variant="contained" type='submit' className={styles.regbtn} disabled={loading}
+           <Button variant="contained" type='submit' className={styles.regbtn} 
       sx={{
                  color:'black',
                 borderColor:grey[500],
                 width :'50%',
                 borderRadius:'30px'
              }}
-      >
-        {loading?'Loading...' : 'login' }
+             >
+           {loginMutation.isPending ? 'Loading...' : 'Login'}
+
       </Button>
         </Box>
         

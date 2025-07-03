@@ -1,11 +1,15 @@
 import { createTheme } from "@mui/material";
 
 
-const theme=createTheme({
+const theme=(mode)=>createTheme({
     typography:{
      button:{
         
      }
+    },
+    palette: {
+    mode: mode,
+    
     }
 })
 

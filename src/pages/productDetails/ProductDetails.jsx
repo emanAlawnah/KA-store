@@ -4,51 +4,63 @@ import { useParams } from 'react-router'
 import axios from 'axios';
 import Loader from '../../componants/shared/Loader';
 import { Button, Card, CardContent, CardMedia, Typography } from '@mui/material';
+import { QueryClient, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import AxiosAuth from '../../api/AxiosAuth';
+import { Bounce, toast } from 'react-toastify';
 export default function ProductDetails() {
-    const{id}=useParams('id');
-    const[product,setproduct]=useState(null);
-    const[isloading,setisloading]=useState(true);
-    const addToCard=async(id)=>{
-        const userToken =localStorage.getItem('token');
-       const response=await axios.post(`https://mytshop.runasp.net/api/Carts/${id}`,{},
-        {
-            headers:{
-                Authorization:`Bearer ${userToken}`
-            }
-        }
-       );
+    const queryClient = useQueryClient(); 
 
+    const{id}=useParams('id');
+   
+ 
+
+    const addToCrrtNutation= useMutation({
+        mutationFn : (productid)=>{
+            return AxiosAuth.post(`/Carts/${productid}`,{});
+        },
+        onSuccess:()=>{
+            
+          queryClient.invalidateQueries({queryKey:['cartItems']});
+           
+        toast.success("added to cart successfully");
+
+        },
+        onError:()=>{
+            console.log(`...error`,error.message)
+        }
+    })
+ 
+    const fetchProductDetails = async ()=>{
+        const {data}= await axios.get(`https://mytshop.runasp.net/api/products/${id}`);
+        return data;
     }
-    const getproductDetails=async()=>{
-        const response=await axios.get(`https://mytshop.runasp.net/api/products/${id}`);
-        setproduct(response.data);
-        setisloading(false);
-    }
-    useEffect(()=>{
-        getproductDetails();
-    },[])
-    if(isloading){
-        return(
-            <Loader/>
-        )
-    }
+    const {data,isLoading,isError,error}=useQuery({
+        queryKey: ['product', id],
+        queryFn:fetchProductDetails,
+        staleTime:1*60*60*1000,
+        refetchOnWindowFocus:true,
+        retry:3
+    })
+    if(isLoading) return <Loader/>
+    if(isError) return <p>error :{error.message}</p>
   return (
     <Card>
         <CardContent>
             <Typography component={'h5'}>
-                {product.name}
+                {data.name}
             </Typography>
             <CardMedia
           component="img"
         
         height="140"
-        image={product.mainImg}
+        image={data.mainImg}
         />
         <Typography>
-            {product.description}
+            {data.description}
         </Typography>
-        <Button onClick={()=>addToCard(product.id)}>
-            add to card
+        <Button onClick={()=>addToCrrtNutation.mutate(data.id)}
+            disabled={addToCrrtNutation.isPending}>
+           {addToCrrtNutation.isPending?'adding....':'add to cart'}
         </Button>
         </CardContent>
     </Card>

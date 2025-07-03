@@ -7,17 +7,17 @@ import axios from 'axios'
 import { grey } from '@mui/material/colors'
 import { Link } from 'react-router';
 import { Bounce, toast } from 'react-toastify'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 export default function Register() {
-  const [loading,setloading]=useState(false);
-  const [error,setrror]=useState({});
-  const {register ,handleSubmit,formState:{errors} }=useForm({mode:'onBlur'});
 
-  const regesterform = async(values)=>{
-    try{
-      setloading(true);
-     const responce = await axios.post(`https://mytshop.runasp.net/api/Account/register`,values);
-     console.log(responce);
+  const regesetMutation=useMutation({
+    mutationFn:async(values)=>{
+      const responce =await axios.post(`https://mytshop.runasp.net/api/Account/register`,values);
+      return responce.data;
+    },
+    onSuccess:(data)=>{
+      
       toast.success('regesterd successfully', {
 position: "top-right",
 autoClose: 3000,
@@ -30,11 +30,10 @@ theme: "light",
 transition: Bounce,
 });
  navigate('/'); 
-    } catch (error) {
-  const errors = error?.response?.data?.errors;
-
-  if (error) {
-    setrror(error); 
+    },
+    onError:(error)=>{
+      if(error){
+      
 
     toast.error('Please fix the highlighted errors', {
       position: "bottom-right",
@@ -42,19 +41,24 @@ transition: Bounce,
       theme: "light",
       transition: Bounce,
     });
-  } else {
-    toast.error('Registration failed', {
+      }else{
+        toast.error('Registration failed', {
       position: "bottom-right",
       autoClose: 3000,
       theme: "light",
       transition: Bounce,
     });
-  }
-}
-finally{
-      setloading(false);
+      }
+    console.error("Error :", error.message);
+
     }
+  });
+  const regesterform =async(values)=>{
+      regesetMutation.mutate(values);
   }
+  
+  const {register ,handleSubmit,formState:{errors} }=useForm({mode:'onBlur'});
+   
   return (
         <Box component={'div'} className={styles.regcont}>
           <Box className={styles.leftcont}>
@@ -325,14 +329,14 @@ finally{
 
         />
         <Box component='div' sx={{width :'100%'}} className={styles.btnbox}>
-           <Button variant="contained" type='submit' className={styles.regbtn} disabled={loading}
+           <Button variant="contained" type='submit' className={styles.regbtn} 
       sx={{
                 color:'black',
                 borderColor:grey[500],
                 width :'50%',
                 borderRadius:'30px'
              }}
-      > {loading?'Loading...' : 'Regester' }</Button>
+      > {regesetMutation.isPending ?  'Loading...' : 'register' }</Button>
         </Box>
 
         

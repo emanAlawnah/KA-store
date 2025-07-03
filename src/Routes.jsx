@@ -23,8 +23,9 @@ const Routes = createBrowserRouter([
       errorElement:<ErrorBage/>,
       children:[
         {
-          path:'/',
-          element:<Home/>
+          index:true,
+          element:<Home/>,
+          viewTransition: true
         },
          
        
@@ -34,7 +35,9 @@ const Routes = createBrowserRouter([
         },
          {
             path:'/product/:id',
-            element:<ProductDetails/>
+            element:<ProductDetails/>,
+            viewTransition: true
+
         },
         {
           
@@ -43,13 +46,16 @@ const Routes = createBrowserRouter([
             <ProtectedRouter>
                <Cart/>
             </ProtectedRouter>
+            ,
+             viewTransition: true
         },
         {
           path:'/checkout',
           element:
           <ProtectedRouter>
              <Checkout/>
-          </ProtectedRouter>
+          </ProtectedRouter>,
+          viewTransition: true
           
           
         },
@@ -63,7 +69,7 @@ const Routes = createBrowserRouter([
     element: <RegisterLayout />,
     errorElement: <ErrorBage />,
     children: [
-      { path: 'login', element: <Login /> },
+      { path: 'login', element: <Login />,viewTransition: true },
       { path: 'register', element: <Register /> },
       {path:'resetPassword', element: <ResetPass /> },
       {path:'verifycode',element: <ResetPassCode/> },
