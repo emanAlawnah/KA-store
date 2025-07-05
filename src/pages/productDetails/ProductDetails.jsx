@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react'
 import styles from './productDetails.module.css'
 import { useParams } from 'react-router'
 import axios from 'axios';
@@ -11,7 +10,7 @@ export default function ProductDetails() {
     const queryClient = useQueryClient(); 
 
     const{id}=useParams('id');
-   
+    
  
 
     const addToCrrtNutation= useMutation({
@@ -44,7 +43,7 @@ export default function ProductDetails() {
     if(isLoading) return <Loader/>
     if(isError) return <p>error :{error.message}</p>
   return (
-    <Card>
+    <Card sx={{mt:'100px'}}>
         <CardContent>
             <Typography component={'h5'}>
                 {data.name}

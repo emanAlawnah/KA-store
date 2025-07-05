@@ -16,6 +16,10 @@ import Newpassword from "./pages/newpassword/Newpassword";
 import ProductDetails from "./pages/productDetails/ProductDetails";
 import Checkout from "./pages/checkout/Checkout";
 import ProtectedRouter from "./componants/protectedRouter/ProtectedRouter";
+import Navproducts from "./pages/navboroducts/Navproducts";
+import ContactUs from "./pages/contactUs/ContactUs";
+import AboutUs from "./pages/AboutUs/AboutUs";
+import Category from "./pages/category/Category";
 const Routes = createBrowserRouter([
     {
       path:'/',
@@ -59,6 +63,32 @@ const Routes = createBrowserRouter([
           
           
         },
+
+         {path:'/navproducts',
+          element:<Navproducts/>,
+          viewTransition: true
+},
+
+          {
+          path:'/contactUs',
+          element:<ContactUs/>,
+          viewTransition: true
+
+          },
+
+          {
+          path:'/AboutUs',
+          element:<AboutUs/>,
+          viewTransition: true
+
+          },
+
+
+          {
+            path:'/category/:id',
+            element:<Category/>,
+            viewTransition:true,
+          },
 
          
       ],

@@ -1,11 +1,8 @@
-import React, { useState } from 'react'
 import styles from './caregories.module.css'
 import axios from 'axios';
-import { useEffect } from 'react';
-import { Box, Button, Card, CardActionArea, CardContent, CardMedia, Grid, Typography } from '@mui/material';
-import { data } from 'react-router';
+import { Box, Card, Grid, Typography } from '@mui/material';
+import { data, Link } from 'react-router';
 import Loader from '../shared/Loader';
-import Usefetch from '../../hooks/Usefetch';
 import { useQueries, useQuery } from '@tanstack/react-query';
 export default function Categories() {
    const fetchCategories =async()=>{
@@ -27,6 +24,7 @@ export default function Categories() {
     <Box className={styles.all}
   component="div"
   sx={{
+    mt:'40px',
     minWidth: '100wh',
     display: 'flex',
     justifyContent: 'center',
@@ -49,6 +47,7 @@ export default function Categories() {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
+      width:'100%'
       
     }}
   >
@@ -56,10 +55,11 @@ export default function Categories() {
       <Grid
         className={styles.v}
         sx={{ padding: 1 }}
-        size={{xs:6,sm:6,md:3,lg:2,xl:2}}
-       
+        size={{xs:6,sm:4,md:3,lg:2,xl:2}}
+        
         key={category.id}
       >
+        <Link to={`/category/${category.id}`} style={{ textDecoration: 'none' }}>
         <Card
           className={styles.e}
           sx={{
@@ -91,6 +91,7 @@ export default function Categories() {
             </Typography>
           </Box>
         </Card>
+        </Link>
       </Grid>
     ))}
   </Grid>

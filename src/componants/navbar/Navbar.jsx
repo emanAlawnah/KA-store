@@ -17,21 +17,28 @@ import Register from '../../pages/register/Register';
 import Login from '../../pages/login/Login';
 import Cart from '../../pages/cart/Cart';
 import { ThemeContext } from '@emotion/react';
-import { DarkMode, LightMode } from '@mui/icons-material';
+import { DarkMode, LightMode, Style } from '@mui/icons-material';
 import { Themecontext } from '../../context/Themecontext';
 import { QueryClient, useQuery, useQueryClient } from '@tanstack/react-query';
 import AxiosAuth from '../../api/AxiosAuth';
+import styles from './navbar.module.css'
+import AboutUs from '../../pages/AboutUs/AboutUs';
 
 const path = {
+  Home :'/',
+  contactUs:'/contactUs',
+  AboutUs:'/AboutUs',
+  products:'/navproducts',
   register: '/auth/register',
   login: '/auth/login',
   cart: '/cart',
 };
 
-const pagesGest = ['register', 'login'];
-const pageAuth = ['cart'];
+const pagesGest = ['Home','products','AboutUs','contactUs'];
+const pageGestt=['register', 'login'];
+const pageAuth = ['Home','products','AboutUs','contactUs','cart'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-
+const allGuestPages = [...pagesGest, ...pageGestt];
 function Navbar() {
    const queryClient = useQueryClient();
    const fetchCartItems = async ()=>{
@@ -75,143 +82,123 @@ function Navbar() {
   };
 
   return (
-    <AppBar position="static">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-          <Typography
-           component={Link}
-            to='/'
-            variant="h6"
-            noWrap
-           
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-            viewTransition
-          >
-            LOGO
-          </Typography>
+    <AppBar position="fixed" className={styles.navbar} sx={{ background: '#4fc4ca' }}>
+  <Container maxWidth="xl">
+    <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+      
+      {/* logo */}
+      <Box component={Link} to='/' sx={{ display: 'flex', alignItems: 'center' }}>
+        <img
+          src='/logo.svg'
+          alt='logo'
+          style={{ height: '40px', display: 'flex' }}
+        />
+      </Box>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{ display: { xs: 'block', md: 'none' } }}
-            >
-              {(islogedIn ? pageAuth :pagesGest ).map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>
-                    {page == 'cart'?`cart(${cartItems})` :page}
-                  </Typography>
-                </MenuItem>
-              ))}
-
-              
-              
-            </Menu>
-            
-          </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-          <Typography
-            variant="h5"
-            noWrap
+      {/* pages */}
+      <Box sx={{ flexGrow: 1, justifyContent: 'center', display: { xs: 'none', md: 'flex' }, gap: 2 }}>
+        {(islogedIn ? pageAuth : pagesGest).map((page) => (
+          <Button
+            key={page}
             component={Link}
-            to='/'
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
+            to={path[page]}
+            sx={{ my: 2, color: 'black', textTransform: 'capitalize' }}
           >
-            LOGO
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {(islogedIn? pageAuth:pagesGest).map((page) => (
-              <Button
-                key={page}
-                component={Link}
-                to={path[page]}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-                 viewTransition
-              >
-                {page=='cart'?`cart (${cartItems})` :page}
-              </Button>
-            ))}
-            {islogedIn ?(
-              <Button sx={{ my: 2, color: 'white', display: 'block' }} onClick={Logout}>logout</Button>
-            ):null}
-          </Box>
-          <Box sx={{ flexGrow: 0 }}>
-            <IconButton onClick={togle}>
-              {mode === 'light'?<DarkMode/> : <LightMode/>}
-            </IconButton>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
+            {page === 'cart' ? `cart (${cartItems})` : page}
+          </Button>
+        ))}
+      </Box>
+
+      {/* on mobile */}
+      <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+        <IconButton
+          size="large"
+          aria-label="menu"
+          onClick={handleOpenNavMenu}
+          color="inherit"
+        >
+          <MenuIcon />
+        </IconButton>
+        <Menu
+          id="menu-appbar"
+          anchorEl={anchorElNav}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+          keepMounted
+          transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+          open={Boolean(anchorElNav)}
+          onClose={handleCloseNavMenu}
+          sx={{ display: { xs: 'block', md: 'none' } }}
+        >
+          {(islogedIn ? pageAuth : allGuestPages).map((page) => (
+            <MenuItem component={Link} to={path[page]} key={page} onClick={handleCloseNavMenu}>
+              <Typography textAlign="center">
+                {page === 'cart' ? `cart (${cartItems})` : page}
+              </Typography>
+            </MenuItem>
+          ))}
+        </Menu>
+      </Box>
+
+      {/* Login Regester*/}
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1,flexShrink: 0,
+    minWidth: 'fit-content' }}>
+        {!islogedIn &&
+          pageGestt.map((page) => (
+            <Button
+              key={page}
+              component={Link}
+              to={path[page]}
+              sx={{ color: 'black', display: { xs: 'none', md: 'inline-flex' } }}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
+              {page}
+            </Button>
+          ))
+        }
+
+        <Tooltip title="Open settings">
+          <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+            <Avatar alt="User" src="/static/images/avatar/2.jpg" />
+          </IconButton>
+        </Tooltip>
+
+        <Menu
+          sx={{ mt: '45px' }}
+          id="menu-appbar"
+          anchorEl={anchorElUser}
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          keepMounted
+          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+          open={Boolean(anchorElUser)}
+          onClose={handleCloseUserMenu}
+        >
+          <MenuItem>
+          <IconButton onClick={togle}>
+            {mode === 'light' ? <DarkMode /> : <LightMode />}
+          </IconButton>
+        </MenuItem>
+
+        {settings
+          .filter(setting => setting !== 'Logout' || islogedIn) 
+          .map((setting) => (
+            <MenuItem
+              key={setting}
+              onClick={() => {
+                handleCloseUserMenu();
+                if (setting === 'Logout') Logout();
+              }}
+            >
+              <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
+            </MenuItem>
+        ))}
+
+
+        </Menu>
+      </Box>
+
+    </Toolbar>
+  </Container>
+</AppBar>
+
   );
 }
 export default Navbar;
