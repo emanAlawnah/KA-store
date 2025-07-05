@@ -18,7 +18,7 @@ import Checkout from "./pages/checkout/Checkout";
 import ProtectedRouter from "./componants/protectedRouter/ProtectedRouter";
 import Navproducts from "./pages/navboroducts/Navproducts";
 import ContactUs from "./pages/contactUs/ContactUs";
-import AboutUs from "./pages/AboutUs/AboutUs";
+import AboutUs from "./pages/aboutus/AboutUs";
 import Category from "./pages/category/Category";
 const Routes = createBrowserRouter([
     {
