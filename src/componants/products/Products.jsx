@@ -3,8 +3,21 @@ import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardMedia,
 import { Link, useViewTransitionState } from 'react-router';
 import Loader from '../shared/Loader';
 import { useQuery } from '@tanstack/react-query';
-export default function Products({ limit = null }) {
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import { Navigation } from 'swiper/modules';
+import styles from './products.module.css'
+import { Favorite, FavoriteBorder, Scale } from '@mui/icons-material';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { useState } from 'react';
 
+
+export default function Products({ limit = null, slider = false }) {
+  const [liked, setLiked] = useState(false);
+  const togle=(id)=>{
+    setLiked((prev)=>({...prev,[id]:!prev[id]}))
+  }
   const fetchProduct = async ()=>{
     const dummyProducts =[
       {id:'dummy1',
@@ -37,6 +50,36 @@ export default function Products({ limit = null }) {
         mainImg: '/images/product.webp',
          price:1000,
       },
+      {id:'dummy7',
+        name: 'Wireless Headphones',
+        mainImg: '/images/product.webp',
+        price:1000,
+      },
+        {id:'dummy8',
+        name: 'smart watch',
+        mainImg: '/images/product.webp',
+         price:1000,
+      },
+      {id:'dummy9',
+        name: 'smart watch',
+       mainImg: '/images/product.webp',
+        price:1000,
+      },
+      {id:'dummy10',
+        name: 'smart watch',
+        mainImg: '/images/product.webp',
+         price:1000,
+      },
+      {id:'dummy11',
+        name: 'smart watch',
+        mainImg: '/images/product.webp',
+         price:1000,
+      },
+      {id:'dummy12',
+        name: 'smart watch',
+        mainImg: '/images/product.webp',
+         price:1000,
+      },
 
     ];
     const{data}= await axios.get('https://mytshop.runasp.net/api/products');
@@ -61,17 +104,10 @@ export default function Products({ limit = null }) {
    if (!isLoading && (!data || !Array.isArray(data))) {
   return <p>No products found</p>;
 }
-  
-  return (
-   
- <Grid container justifyContent="start" spacing={2}>
-     {
-     data.map((product)=>
-      <Grid  sx={{padding:1,justifyContent:'center',alignItems:'center' , gap:'10px'}} item size={{xs:6,sm:4,md:3}} key={product.id} >
-        
-       <Card
+  const productCard =(product)=>(
+      <Card
   sx={{
-   
+     position: 'relative',
     maxWidth: '312px',
     height: '100%',
     display: 'flex',
@@ -81,10 +117,41 @@ export default function Products({ limit = null }) {
     transition: 'all .3s ease',
     '&:hover': {
       transform: 'translateY(-5px)',
-    },
+      '& .heart-icon':{
+      opacity:1,
+      transform:'Scale(1)',
+    }
+    }
+    
   }}
 >
-  
+  <Box
+    className="heart-icon"
+    sx={{
+      position: 'absolute',
+      top: 10,
+      right: 10,
+      width:'20px',
+      height:'20px',
+      backgroundColor: 'white',
+      borderRadius: '15px',
+      padding: '6px',
+      boxShadow: 1,
+      cursor: 'pointer',
+      opacity: 0,
+      transform: 'scale(0.8)',
+      transition: 'all 0.3s ease',
+      zIndex: 1,
+      
+    }}
+    onClick={(e)=>{ e.stopPropagation(); 
+      
+    togle(product.id);}}
+  >
+    {liked[product.id]?( <Favorite fontSize="small" sx={{ color: 'gray' }} />):(<FavoriteBorder fontSize="small" sx={{ color: 'black' }} />)}
+    
+  </Box>
+
 
   <CardMedia
     component="img"
@@ -133,12 +200,32 @@ export default function Products({ limit = null }) {
     </CardActions>
   </Box>
 </Card>
+  )
 
-     </Grid>
-     )
-                
-}
-        </Grid>
+
+  return slider ? (
+   
+ <Swiper style={{ padding: '10px' }}
+      modules={[Navigation]}
+      spaceBetween={16}
+      slidesPerView={1}
+      navigation
+      breakpoints={{
+        500: { slidesPerView: 2 },
+        800: { slidesPerView: 3 },
+        1200: { slidesPerView: 4 },
+      }}
+    >
+      {data.map((product) => (
+        <SwiperSlide key={product.id}>{productCard(product)}</SwiperSlide>
+      ))}
+    </Swiper>
+  ) : (
+    <Box display="flex" flexWrap="wrap" gap={2}>
+      {data.map((product) => (
+        <Box key={product.id}>{productCard(product)}</Box>
+      ))}
+    </Box>
    
   );
 }

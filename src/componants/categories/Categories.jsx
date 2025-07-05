@@ -55,7 +55,7 @@ export default function Categories() {
       <Grid
         className={styles.v}
         sx={{ padding: 1 }}
-        size={{xs:6,sm:4,md:3,lg:2,xl:2}}
+        size={{xs:7,sm:4,md:4,lg:2,xl:2}}
         
         key={category.id}
       >
@@ -63,14 +63,19 @@ export default function Categories() {
         <Card
           className={styles.e}
           sx={{
-            height: '125px',
-            width: '125px',
-            borderRadius: '50%',
+            height: '50px',
+            padding:'20px',
+            width: '170px',
+            borderRadius: '15px',
             overflow: 'hidden',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
             background: 'rgba(230, 227, 255, 1)',
+            transition :'all .3s ease',
+            '&:hover':{
+              transform: 'translateY(-10px)'
+            },
           }}
         >
           <Box

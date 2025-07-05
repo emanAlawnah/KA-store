@@ -38,3 +38,18 @@ body{
   from { opacity: 0; transform: translateY(15px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+.swiper-button-next,
+.swiper-button-prev {
+  width: 30px;         
+  height: 30px;
+  font-size: 12px;     
+  background-color: #eee; 
+  border-radius: 50%;  
+  color: #333;        
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 12px; 
+}

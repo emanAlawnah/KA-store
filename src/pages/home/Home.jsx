@@ -1,4 +1,4 @@
-import { Button, IconButton } from '@mui/material'
+import { Button, Container, IconButton } from '@mui/material'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SendIcon from '@mui/icons-material/Send';
 
@@ -7,12 +7,29 @@ import Categories from '../../componants/categories/Categories';
 import Products from '../../componants/products/Products';
 import Hero from '../../componants/hero/Hero';
 import BestSellers from '../../componants/BestSellers/BestSellers';
+import NewSec from '../../componants/newSec/NewSec';
+import AppleProduct from '../../componants/apleProduct/AppleProduct';
 export default function Home() {
   return (
     <>
-    <Hero/>
-    <Categories/>
-    <BestSellers/>
+    
+     <Container>
+        <Hero/>
+     </Container>
+   
+     <Container>
+          <Categories/>
+
+     </Container>
+
+     <Container>
+     <BestSellers/>
+
+     </Container>
+      <NewSec/>
+      <Container>
+        <AppleProduct/>
+      </Container>
     
    
 
