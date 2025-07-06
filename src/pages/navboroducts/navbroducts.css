@@ -1,0 +1,96 @@
+.products .card img {
+  width: 80%;
+ }
+ .new-product-card .card {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+ .products .card .image-wrapper::after{
+  content: '';
+  position: absolute;
+  background-image: linear-gradient(to right, #f6f6f6, #797979, #f6f6f6);
+  height: 1.5px;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  opacity: 0.7;
+  animation: lineExpand 0.5s ease-out forwards;
+}
+.products .card:hover .image-wrapper::after {
+  background-image: linear-gradient(to right, #f6f6f6, #0C68F4, #f6f6f6);
+}
+.products .card .heart {
+  top: 5px;
+  left: 10px;
+  width: 20px; 
+  opacity: 0;
+  visibility: hidden; 
+  transition: opacity 0.2s ease-in-out 0.3s, visibility 0.3s; 
+
+
+}
+.bg-iphone{
+  background-image: linear-gradient(to right, #25a1df, #06f7cb, #79f6f0);
+
+}
+
+.products .card:hover  {
+  box-shadow: 5px 5px 8px #888888;
+
+}
+.products .card{ cursor: pointer;}
+
+.products .dots{
+  top:26%;
+  right: 8px;
+  z-index: 1;
+}
+.products .image-wrapper {
+  height: 68.6%;
+}
+
+.heart {
+  transition: all 0.3s ease-in-out !important;
+  cursor: pointer;
+  z-index: 1;
+
+}
+.heart.bold-heart {
+  filter: 
+      drop-shadow(0 0 3px rgba(255, 0, 0, 0.7)) 
+      brightness(1.2); 
+}
+.products .card:hover .heart {
+  opacity: 1; 
+  visibility: visible;
+    
+
+}
+.Best-Sellers .card .product-image{
+transition: transform 0.3s ease-in-out;
+}
+.Best-Sellers .card :hover .product-image{
+transform: scale(1.2); 
+}
+/* .New-Products .title ::after{
+  content: '';
+  position: absolute;
+  background-color: #888888;
+  height: 1.5px;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  opacity: 0.7;
+} */
+
+.products .title {
+  position: relative;
+  padding-bottom: 8px; 
+
+
+}
+
+/* end */

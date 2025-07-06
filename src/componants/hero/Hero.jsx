@@ -48,7 +48,7 @@ export default function Hero() {
       sx={{
         height: { xs: 'auto', md: '55vh' },
         width: '100%',
-        mt: '100px',
+        mt: '20px',
         backgroundColor: currentSlide.background,
         color: 'white',
         borderRadius: '20px',

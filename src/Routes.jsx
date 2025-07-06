@@ -20,6 +20,11 @@ import Navproducts from "./pages/navboroducts/Navproducts";
 import ContactUs from "./pages/contactUs/ContactUs";
 import Category from "./pages/category/Category";
 import AboutUs from "./pages/AboutUs/AboutUs";
+import Profile from "./pages/profile/Profile";
+import ProfileLayout from "./layout/ProfileLayout";
+import Info from "./pages/info/Info";
+import ChangPassword from "./pages/changPassword/ChangPassword";
+import Orders from "./pages/orders/Orders";
 const Routes = createBrowserRouter([
     {
       path:'/',
@@ -89,6 +94,7 @@ const Routes = createBrowserRouter([
             element:<Category/>,
             viewTransition:true,
           },
+          
 
          
       ],
@@ -99,13 +105,30 @@ const Routes = createBrowserRouter([
     element: <RegisterLayout />,
     errorElement: <ErrorBage />,
     children: [
-      { path: 'login', element: <Login />,viewTransition: true },
-      { path: 'register', element: <Register /> },
+      {path: 'login', element: <Login />,viewTransition: true },
+      {path: 'register', element: <Register /> },
       {path:'resetPassword', element: <ResetPass /> },
       {path:'verifycode',element: <ResetPassCode/> },
       {path:'newpassword', element:<Newpassword/> }
     ],
   },
+
+ { path:'/profile',
+  element:<ProfileLayout/>,
+  errorElement: <ErrorBage />,
+  children:[
+     {
+          index:true,
+          element:<Profile/>,
+          viewTransition: true
+     },
+
+    {path:'info', element:<Info/>},
+    {path:'changPasword', element:<ChangPassword/>},
+    {path:'Orders', element:<Orders/>}
+  ]
+ }
+
 ]);
 
 export default Routes;

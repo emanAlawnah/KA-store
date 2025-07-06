@@ -62,6 +62,9 @@ transition: Bounce,
   return (
         <Box component={'div'} className={styles.regcont}>
           <Box className={styles.leftcont}>
+             <Link to ='/'>
+               <img src='/logoo.svg'/>
+              </Link>
           </Box>
       
     <Box component={'div'} className={styles.rightcont}>

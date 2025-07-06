@@ -32,12 +32,13 @@ const path = {
   register: '/auth/register',
   login: '/auth/login',
   cart: '/cart',
+  Profile:'/Profile'
 };
 
 const pagesGest = ['Home','products','AboutUs','contactUs'];
 const pageGestt=['register', 'login'];
 const pageAuth = ['Home','products','AboutUs','contactUs','cart'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Profile', 'Dashboard', 'Logout'];
 const allGuestPages = [...pagesGest, ...pageGestt];
 function Navbar() {
    const queryClient = useQueryClient();
@@ -178,13 +179,18 @@ function Navbar() {
         </MenuItem>
 
         {settings
-          .filter(setting => setting !== 'Logout' || islogedIn) 
+          .filter((setting) => {
+            if (setting === 'Logout') return islogedIn;
+            if (setting === 'Profile') return islogedIn;
+            return true; 
+          })
           .map((setting) => (
             <MenuItem
               key={setting}
               onClick={() => {
                 handleCloseUserMenu();
                 if (setting === 'Logout') Logout();
+                if(setting.toLowerCase()  === 'profile')  navigate('/profile');
               }}
             >
               <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>

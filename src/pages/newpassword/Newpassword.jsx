@@ -65,8 +65,11 @@ export default function Newpassword() {
   return (
     <>
     <Box component={'div'} className={styles.forgetpass}>
-    <Box component={'div'} className={styles.leftside}>
       
+    <Box component={'div'} className={styles.leftside}>
+        <Link to ='/'>
+           <img src='/logoo.svg'/>
+        </Link>
     </Box>
     <Box component={'div'} className={styles.rightside}>
      <Box component={'div'} className={styles.first}>

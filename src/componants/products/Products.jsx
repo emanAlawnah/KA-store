@@ -38,7 +38,7 @@ export default function Products({ limit = null, slider = false }) {
       {id:'dummy4',
         name: 'smart watch',
         mainImg: '/images/product.webp',
-         price:1000,
+        price:1000,
       },
       {id:'dummy5',
         name: 'smart watch',
@@ -131,17 +131,20 @@ export default function Products({ limit = null, slider = false }) {
       position: 'absolute',
       top: 10,
       right: 10,
-      width:'20px',
-      height:'20px',
+    height:'25px',
+    width:'25px',
       backgroundColor: 'white',
       borderRadius: '15px',
-      padding: '6px',
+      padding: '3px',
       boxShadow: 1,
       cursor: 'pointer',
       opacity: 0,
       transform: 'scale(0.8)',
       transition: 'all 0.3s ease',
       zIndex: 1,
+      display:'flex',
+      alignItems:'center',
+      justifyContent:'center',
       
     }}
     onClick={(e)=>{ e.stopPropagation(); 
@@ -221,9 +224,9 @@ export default function Products({ limit = null, slider = false }) {
       ))}
     </Swiper>
   ) : (
-    <Box display="flex" flexWrap="wrap" gap={2}>
+    <Box display="flex" flexWrap="wrap" gap={2} justifyContent="center">
       {data.map((product) => (
-        <Box key={product.id}>{productCard(product)}</Box>
+        <Box key={product.id} sx={{ width: '220px' }}>{productCard(product)}</Box>
       ))}
     </Box>
    

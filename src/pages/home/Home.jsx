@@ -9,6 +9,7 @@ import Hero from '../../componants/hero/Hero';
 import BestSellers from '../../componants/BestSellers/BestSellers';
 import NewSec from '../../componants/newSec/NewSec';
 import AppleProduct from '../../componants/apleProduct/AppleProduct';
+import Subscribe from '../../componants/subscribe/Subscribe';
 export default function Home() {
   return (
     <>
@@ -30,7 +31,7 @@ export default function Home() {
       <Container>
         <AppleProduct/>
       </Container>
-    
+      <Subscribe/>
    
 
 

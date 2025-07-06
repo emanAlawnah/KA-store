@@ -22,8 +22,8 @@ export default function Categories() {
    if (!data || !Array.isArray(data)) return <p>No categories found</p>;
   return (
     <Box className={styles.all}
-  component="div"
-  sx={{
+   component="div"
+   sx={{
     mt:'40px',
     minWidth: '100wh',
     display: 'flex',

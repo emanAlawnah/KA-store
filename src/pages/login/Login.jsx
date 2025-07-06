@@ -64,7 +64,10 @@ const loginform = async (values) => {
       <>
       <Box component={'div'} className={styles.logoncont} sx={{width:'100%'}} >
         <Box component ={'div'} className={styles.leftcont} sx={{}}>
-          
+         
+          <Link to ='/'>
+          <img src='/logoo.svg'/>
+          </Link>
         </Box>
 
       <Box component={'div'} className={styles.rightcont}>
