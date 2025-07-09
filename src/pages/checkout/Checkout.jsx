@@ -20,10 +20,11 @@ export default function Checkout() {
   }
   }
   return (
-    <Box sx={{mt:3}}>
-     <Card sx={{ p:2 }}>
-       <Typography variant='h2' >Checkout</Typography>
-       <FormControl >
+    <Box sx={{mt:'15px',height:'80vh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
+     <Card sx={{ padding:'50px',borderRadius:'15px',boxShadow:'5' }}>
+       <Typography sx={{fontSize:'30px',fontWeight:'bold'}} variant='h2' >Checkout</Typography>
+       <Box sx={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'flex-end'}}>
+         <FormControl >
        <RadioGroup value={paymentMethod} onChange={handelpayment}>
         <FormControlLabel value='Visa' control={<Radio/>} label='visa'/>
         <FormControlLabel value='Cash' control={<Radio/>} label='cash on delevary'/>
@@ -31,9 +32,11 @@ export default function Checkout() {
        </RadioGroup>
        </FormControl>
        
-                      
+        <Button sx={{backgroundColor:'#4FC4CA'}} onClick={handelpay} variant='contained'>confirm payment</Button>  
+       </Box>
+                
      </Card>
-     <Button onClick={handelpay} variant='contained'>confirm payment</Button>  
+      
     </Box>
   )
 }

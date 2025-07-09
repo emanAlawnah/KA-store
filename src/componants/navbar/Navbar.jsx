@@ -32,7 +32,7 @@ const path = {
   register: '/auth/register',
   login: '/auth/login',
   cart: '/cart',
-  Profile:'/Profile'
+  Profile:'/Profile',
 };
 
 const pagesGest = ['Home','products','AboutUs','contactUs'];
@@ -140,23 +140,30 @@ function Navbar() {
         </Menu>
       </Box>
 
-      {/* Login Regester*/}
+      
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1,flexShrink: 0,
     minWidth: 'fit-content' }}>
         {!islogedIn &&
           pageGestt.map((page) => (
-            <Button
+            <Button variant="contained"
               key={page}
               component={Link}
               to={path[page]}
-              sx={{ color: 'black', display: { xs: 'none', md: 'inline-flex' } }}
+              sx={{ color: '#16123F',backgroundColor:'#FFFFFF',borderRadius:'15px', display: { xs: 'none', md: 'inline-flex' },
+              transition: 'background-color 0.7s ease, color 0.7s ease',
+            '&:hover': {
+              backgroundColor:'#16123F',
+              color:'#FFFFFF',
+            }, }}
             >
-              {page}
+             {page}
             </Button>
           ))
         }
 
-        <Tooltip title="Open settings">
+       {islogedIn&&(<>
+       
+         <Tooltip title="Open settings">
           <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
             <Avatar alt="User" src="/static/images/avatar/2.jpg" />
           </IconButton>
@@ -199,6 +206,8 @@ function Navbar() {
 
 
         </Menu>
+       
+       </>)} 
       </Box>
 
     </Toolbar>

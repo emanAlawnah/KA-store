@@ -10,6 +10,7 @@ import { Bounce, toast } from 'react-toastify'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export default function Login() {
+
   const queryClient = useQueryClient();
   const navigate=useNavigate();
 
@@ -32,6 +33,8 @@ export default function Login() {
     transition: Bounce,
     });
       localStorage.setItem("token", data.token);
+      localStorage.setItem("userName", data.userName);
+
       navigate('/');
 
   },

@@ -10,7 +10,7 @@ export default function BestSellers() {
             <p style={{ fontWeight: 'bold' }}>Best Sellers</p>
             <Link to='/navproducts'>See all</Link>
         </Box>
-
+         
         <Products limit={6} slider={true} />
     </Box>
   )
