@@ -170,7 +170,7 @@ function CustomizedMenus() {
         </Box>
        </Box>
        <Box sx={{mt:'30px', display:'flex',alignItems:'center',justifyContent:'center'}}>
-         <Products limit={12} slider={false} />
+         <Products limit={30} slider={false} />
        </Box>
         
       

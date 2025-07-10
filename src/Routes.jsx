@@ -114,7 +114,10 @@ const Routes = createBrowserRouter([
   },
 
  { path:'/profile',
-  element:<ProfileLayout/>,
+  element:<ProtectedRouter>
+    <ProfileLayout/>
+    </ProtectedRouter>,
+  
   errorElement: <ErrorBage />,
   children:[
      {

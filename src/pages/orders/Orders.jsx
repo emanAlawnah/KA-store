@@ -5,34 +5,13 @@ import { useQuery } from '@tanstack/react-query';
 import Loader from '../../componants/shared/Loader';
 
 export default function Orders() {
-  const fetchOrderWithDetails = async () => {
-    const { data: orders } = await AxiosAuth.get('/Orders');
-    const approved = orders.filter(order => order.orderStatus === 'Approved');
+  
+ const{data:detailedOrders}=useQuery({
+  queryKey:['userOrdersWithDetails'],
+ })
 
-    const orderWithDetails = await Promise.all(
-      approved.map(async (order) => {
-        const { data } = await AxiosAuth.get(`/Orders/${order.id}`);
-        return data;
-      })
-    );
-
-    return orderWithDetails;
-  };
-
-  const {
-    data: detailedOrders,
-    isLoading,
-    isError,
-    error
-  } = useQuery({
-    queryKey: ['userOrdersWithDetails'],
-    queryFn: fetchOrderWithDetails,
-  });
-
-  if (isLoading) return <Loader />;
-  if (isError) return <p>Error: {error.message}</p>;
   if (!detailedOrders || detailedOrders.length === 0)
-    return <p>No Approved Orders Found</p>;
+  return <p>No Approved Orders Found</p>;
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>

@@ -1,7 +1,7 @@
 .leftcont{
 background-color:#48436a;
 width: 50%;
-background-image: url("/./public/regphoto.png");
+background-image: url("/./regphoto.png");
 background-repeat: no-repeat;
 background-position: center center;
 background-size: contain;
@@ -42,7 +42,7 @@ height: 100vh;
 .leftcont{
 background-color:#48436a;
 width: 40%;
-background-image: url("/./public/regphoto.webp");
+background-image: url("/./regphoto.webp");
 background-repeat: no-repeat;
 background-position: center center;
 background-size: cover;

@@ -5,10 +5,11 @@ import { Box, Button } from '@mui/material';
 import { Link as RouterLink } from 'react-router';
 import { Link } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
+import useUserInfo from '../useUserInfo';
 export default function SideBar() {
     const queryClient =useQueryClient();
-    const userInfo =queryClient.getQueryData(['userInfo']);
-   const userName = userInfo?.userName;
+    const { data, isLoading, isError, error } = useUserInfo();
+   const userName = data?.userName;
     function UploadAvatars() {
     const [avatarSrc, setAvatarSrc] = React.useState(()=>{
     return localStorage.getItem('avatarSrc');

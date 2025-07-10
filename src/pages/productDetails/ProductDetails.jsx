@@ -10,6 +10,11 @@ import { useState } from 'react';
 import Products from '../../componants/products/Products';
 
 export default function ProductDetails() {
+  
+  const { data: detailedOrders,isLoading: loadingOrders } = useQuery({
+  queryKey: ['userOrdersWithDetails'],
+
+  });
   const { id } = useParams();
   const queryClient = useQueryClient();
   const [selectedImg, setSelectedImg] = useState(null);
@@ -52,17 +57,7 @@ export default function ProductDetails() {
     return data;
   };
 
-  const fetchOrderWithDetails = async () => {
-    const { data: orders } = await AxiosAuth.get('/Orders');
-    const approved = orders.filter(order => order.orderStatus === 'Approved');
-    const orderWithDetails = await Promise.all(
-      approved.map(async (order) => {
-        const { data } = await AxiosAuth.get(`/Orders/${order.id}`);
-        return data;
-      })
-    );
-    return orderWithDetails;
-  };
+
 
   const { data: productData, isLoading: loadingProduct, isError: errorProduct, error } = useQuery({
     queryKey: ['product', id],
@@ -70,21 +65,16 @@ export default function ProductDetails() {
     staleTime: 60 * 60 * 1000,
   });
 
-  const { data: detailedOrders, isLoading: loadingOrders, isError: errorOrders } = useQuery({
-    queryKey: ['userOrdersWithDetails'],
-    queryFn: fetchOrderWithDetails,
-    enabled: isLogiedin,
-  });
 
-  if (loadingProduct || loadingOrders) return <Loader />;
-  if (errorProduct || errorOrders) return <p>Error loading data</p>;
+  if (loadingProduct ) return <Loader />;
+  if (errorProduct ) return <p>Error loading data</p>;
 
   const imgBaseUrl = `https://mytshop.runasp.net/images/products/products%20-${productData.name}/`;
   const thumbnails = Array(4).fill(productData.mainImg);
   const selectedImage = selectedImg || productData.mainImg;
 
-  // Get purchased products
-  const purchasedProducts = {};
+  
+const purchasedProducts = {};
 if (Array.isArray(detailedOrders)) {
   detailedOrders.forEach(order => {
     order.items?.forEach(item => {
@@ -170,7 +160,7 @@ if (Array.isArray(detailedOrders)) {
               {addToCartMutation.isPending ? 'Adding...' : 'Add to Cart'}
             </Button>
             {Array.isArray(productData.reviews) && productData.reviews.length > 0 && (
-              <Box sx={{ mt: 4, width:'600px' }}>
+              <Box sx={{ mt: 4, width:{sm:'350px',md:'650px'} }}>
                 <Typography variant="h6">Reviews</Typography>
                 {productData.reviews.map((review) => (
                   <Box key={review.id} sx={{ display: 'flex', gap: 2, p: 2, border: '1px solid #ddd', borderRadius: '10px', mb: 2 }}>
@@ -192,7 +182,8 @@ if (Array.isArray(detailedOrders)) {
 
       {/* تقييم المنتجات المشتراة */}
       <Box sx={{ mt: 6 }}>
-       {purchasedProducts[id] && isLogiedin && (
+      {isLogiedin && loadingOrders && <Loader />}
+    {purchasedProducts[id] && isLogiedin && !loadingOrders && (
     <Box sx={{ mt: 6, p: 2, border: '1px solid #eee', borderRadius: 2 }}>
     <Typography variant="h5" gutterBottom>Rate This Product</Typography>
     <Typography>Purchased on: {new Date(purchasedProducts[id].orderDate).toLocaleDateString()}</Typography>

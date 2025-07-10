@@ -7,19 +7,11 @@ import { EmailOutlined, PermIdentityOutlined } from '@mui/icons-material';
 import { grey } from '@mui/material/colors'
 
 import styles from './info.module.css'
+import useUserInfo from '../../componants/useUserInfo';
 export default function Info() {
-    const fetchUserInfo= async()=>{
-       const {data}= await AxiosAuth.get('/Account/userinfo');
-       return data;
-    }
+    
+    const { data, isLoading, isError, error } = useUserInfo();
 
-     const {data,isLoading,isError,error}=useQuery({
-      queryKey:['userInfo'],
-      queryFn:fetchUserInfo,
-      staleTime:1000*60*60*1000,
-      refetchOnWindowFocus:true,
-      retry:3
-     })
      if(isLoading) return <Loader/>
      if(isError) return<p>error : {error.message}</p>
      if (!data) return <p>No user info found</p>;
