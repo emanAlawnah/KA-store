@@ -7,18 +7,19 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import { Navigation } from 'swiper/modules';
 import { Favorite, FavoriteBorder } from '@mui/icons-material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router';
 import { Link } from '@mui/material';
 import AxiosAuth from '../../api/AxiosAuth';
 import { Bounce, toast } from 'react-toastify';
 
-export default function Products({ limit = null, slider = false }) {
+export default function Products({ limit = null, slider = false, searchQuery='' }) {
   const queryClient = useQueryClient();
   const [liked, setLiked] = useState({});
   const [page, setPage] = useState(1);
   const productsPerPage = 8;
-
+  
+ 
   const togle = (id) => {
     setLiked((prev) => ({ ...prev, [id]: !prev[id] }));
   };
@@ -58,19 +59,22 @@ export default function Products({ limit = null, slider = false }) {
   const { data: products, isLoading, isError, error } = useQuery({
    queryKey: ['products', limit],
     queryFn: fetchProduct,
-    staleTime: 3600000,
+    staleTime: 3600000, 
+    cacheTime: 3600000, 
     refetchOnWindowFocus: true,
     retry: 3,
   });
-
+  
   if (isLoading) return <Loader />;
   if (isError) return <p>Error: {error.message}</p>;
   if (!products || !Array.isArray(products)) return <p>No products found</p>;
-
+    
+  const filteredProducts = products.filter((product) =>
+  product.name.toLowerCase().includes(searchQuery?.toLowerCase() || '')
+);
   const indexOfLastProduct = page * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = slider ? products : products.slice(indexOfFirstProduct, indexOfLastProduct);
-
+  const currentProducts = slider? products.slice(0, limit) : filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
   const handlePageChange = (event, value) => {
     setPage(value);
   };

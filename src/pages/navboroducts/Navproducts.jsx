@@ -1,6 +1,6 @@
 import { EmailOutlined, Search } from '@mui/icons-material'
 import { Box, Button, Checkbox, Container, FormControlLabel, InputAdornment, SvgIcon, TextField, Typography } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import { styled, alpha } from '@mui/material/styles';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -13,6 +13,9 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Products from '../../componants/products/Products';
 
 export default function Navproducts() {
+const [SearchValue,setSearchValue]=useState('');
+
+
   const StyledMenu = styled((props) => (
   <Menu
     elevation={0}
@@ -141,11 +144,15 @@ function CustomizedMenus() {
        <Box sx={{display:'flex',alignItems:'center',justifyContent:'flex-end'}}>
      
         <Box sx={{display:'flex',alignItems:'center',justifyContent:'center'}}>
-          <TextField
+
+         <TextField  onKeyDown={(e) => {if (e.key === 'Enter') { handelSearch(); }}}
                       
                       placeholder='search'
+                      value={SearchValue}
+                      onChange={(e)=>setSearchValue(e.target.value)}
                       type='text'
                       id="outlined-start-adornment"
+                      
                        sx={{
                                             
                         '& .MuiOutlinedInput-root': {
@@ -170,7 +177,7 @@ function CustomizedMenus() {
         </Box>
        </Box>
        <Box sx={{mt:'30px', display:'flex',alignItems:'center',justifyContent:'center'}}>
-         <Products limit={30} slider={false} />
+         <Products limit={30} slider={false} searchQuery={SearchValue} key={SearchValue}/>
        </Box>
         
       

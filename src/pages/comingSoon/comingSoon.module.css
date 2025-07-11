@@ -1,0 +1,8 @@
+.im{
+width: 100vw;
+background-image: url('/./images/S35.png');
+background-repeat: no-repeat;
+background-position: center center;
+background-size: contain;
+height: 100vh; 
+}

@@ -39,7 +39,7 @@ export default function Footer() {
             </Box>
             <Box display="flex" alignItems="center" gap={1} mt={1}>
               <Email />
-              <Typography variant="body2">TechHeimSupport@gmail.com</Typography>
+              <Typography variant="body2">KastoreSupport@gmail.com</Typography>
             </Box>
           </Grid>
 

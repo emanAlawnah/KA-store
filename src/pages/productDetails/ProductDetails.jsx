@@ -180,7 +180,7 @@ if (Array.isArray(detailedOrders)) {
         </Grid>
       </Grid>
 
-      {/* تقييم المنتجات المشتراة */}
+      
       <Box sx={{ mt: 6 }}>
       {isLogiedin && loadingOrders && <Loader />}
     {purchasedProducts[id] && isLogiedin && !loadingOrders && (
@@ -218,7 +218,7 @@ if (Array.isArray(detailedOrders)) {
 
       </Box>
 
-      {/* منتجات مشابهة */}
+    =
       <Box sx={{ pt: 6, pb: 6, mt: 6 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography fontWeight="bold">Similar Products</Typography>
