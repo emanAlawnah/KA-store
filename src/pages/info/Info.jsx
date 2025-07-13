@@ -9,9 +9,7 @@ import { grey } from '@mui/material/colors'
 import styles from './info.module.css'
 import useUserInfo from '../../componants/useUserInfo';
 export default function Info() {
-    
-    const { data, isLoading, isError, error } = useUserInfo();
-
+const { data, isLoading, isError, error } = useUserInfo();
      if(isLoading) return <Loader/>
      if(isError) return<p>error : {error.message}</p>
      if (!data) return <p>No user info found</p>;

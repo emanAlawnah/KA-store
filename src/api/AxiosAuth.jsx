@@ -1,12 +1,18 @@
 import axios from 'axios';
-import React from 'react'
-const token =localStorage.getItem('token');
+
 const AxiosAuth = axios.create({
-    baseURL:'https://mytshop.runasp.net/api/',
-    headers : {
-        Authorization : `Bearer ${token}`,
-    }
+  baseURL: 'https://mytshop.runasp.net/api/',
 });
 
+AxiosAuth.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 export default AxiosAuth;

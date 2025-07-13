@@ -3,12 +3,12 @@ import React from 'react';
 import AxiosAuth from '../../api/AxiosAuth';
 import { useQuery } from '@tanstack/react-query';
 import Loader from '../../componants/shared/Loader';
+import useFetchOrders from '../../hooks/useFetchOrders';
 
 export default function Orders() {
   
- const{data:detailedOrders}=useQuery({
-  queryKey:['userOrdersWithDetails'],
- })
+const result = useFetchOrders();
+const detailedOrders = result?.data ?? [];
 
   if (!detailedOrders || detailedOrders.length === 0)
   return <p>No Approved Orders Found</p>;

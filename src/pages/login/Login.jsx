@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './login.module.css'
 import { Apple, EmailOutlined, FacebookOutlined, Google, Height, HttpsOutlined, Mode, Mood } from '@mui/icons-material'
 import { Box, Button, InputAdornment, TextField, Typography } from '@mui/material'
@@ -8,8 +8,17 @@ import { useForm } from 'react-hook-form'
 import { Link, Navigate, replace, useNavigate } from 'react-router'
 import { Bounce, toast } from 'react-toastify'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import useUserInfo from '../../componants/useUserInfo'
 
 export default function Login() {
+  const isLoggedIn =Boolean(localStorage.getItem('token'));
+  const { refetch } = useUserInfo();
+
+    useEffect(() => {
+      if (isLoggedIn) {
+        refetch(); 
+      }
+    }, [isLoggedIn]);
 
   const queryClient = useQueryClient();
   const navigate=useNavigate();
@@ -34,6 +43,7 @@ export default function Login() {
     });
       localStorage.setItem("token", data.token);
       localStorage.setItem("userName", data.userName);
+     queryClient.invalidateQueries(['userInfo']);
 
       navigate('/');
 

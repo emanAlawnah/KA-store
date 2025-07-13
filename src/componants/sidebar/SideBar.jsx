@@ -15,7 +15,7 @@ export default function SideBar() {
     navigate('/');
   }
     const queryClient =useQueryClient();
-    const { data, isLoading, isError, error } = useUserInfo();
+   const { data, isLoading, isError, error } = useUserInfo();
    const userName = data?.userName;
     function UploadAvatars() {
     const [avatarSrc, setAvatarSrc] = React.useState(()=>{

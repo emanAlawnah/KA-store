@@ -8,13 +8,18 @@ import AxiosAuth from '../../api/AxiosAuth';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
 import Products from '../../componants/products/Products';
+import useFetchOrders from '../../hooks/useFetchOrders';
 
 export default function ProductDetails() {
   
-  const { data: detailedOrders,isLoading: loadingOrders } = useQuery({
-  queryKey: ['userOrdersWithDetails'],
+  
+const {
+  data: detailedOrders = [],
+  isLoading: loadingOrders,
+  isError: errorOrders,
+  error: fetchOrderError
+} = useFetchOrders();
 
-  });
   const { id } = useParams();
   const queryClient = useQueryClient();
   const [selectedImg, setSelectedImg] = useState(null);
@@ -182,7 +187,7 @@ if (Array.isArray(detailedOrders)) {
 
       
       <Box sx={{ mt: 6 }}>
-      {isLogiedin && loadingOrders && <Loader />}
+      {isLogiedin }
     {purchasedProducts[id] && isLogiedin && !loadingOrders && (
     <Box sx={{ mt: 6, p: 2, border: '1px solid #eee', borderRadius: 2 }}>
     <Typography variant="h5" gutterBottom>Rate This Product</Typography>
@@ -218,7 +223,7 @@ if (Array.isArray(detailedOrders)) {
 
       </Box>
 
-    =
+    
       <Box sx={{ pt: 6, pb: 6, mt: 6 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography fontWeight="bold">Similar Products</Typography>
