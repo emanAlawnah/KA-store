@@ -9,7 +9,6 @@ It provides a seamless shopping experience for users and a powerful dashboard fo
 ---
 ### 🔗 API Integration
 - All data (products, categories, orders, users, reviews) is fetched dynamically via RESTful APIs  
-- API endpoints handle CRUD operations for products, categories, users, and orders  
 - React Query is used for efficient data fetching, caching, and state management  
 
 ## 🚀 Key Features
